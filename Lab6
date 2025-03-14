@@ -1,0 +1,163 @@
+using System;
+
+public class LL1Parser
+{
+    private string input;  // The input string (expression)
+    private int position;  // The current position in the input string
+    private char currentChar;  // The current character to be parsed
+
+    public LL1Parser(string input)
+    {
+        this.input = input;
+        this.position = 0;
+        this.currentChar = input[position];
+    }
+
+    // Function to advance to the next character
+    private void Advance()
+    {
+        position++;
+        if (position < input.Length)
+        {
+            currentChar = input[position];
+        }
+        else
+        {
+            currentChar = '\0';  // End of input
+        }
+    }
+
+    // S → Ay | b
+    public void ParseS()
+    {
+        if (currentChar == 'A')
+        {
+            Advance(); // Consume 'A'
+            ParseA();  // Parse A
+            if (currentChar == 'y')
+            {
+                Advance(); // Consume 'y'
+            }
+            else
+            {
+                throw new Exception($"Syntax error: Expected 'y' but found '{currentChar}'");
+            }
+        }
+        else if (currentChar == 'b')
+        {
+            Advance(); // Consume 'b'
+        }
+        else
+        {
+            throw new Exception($"Syntax error: Unexpected character '{currentChar}' in S");
+        }
+    }
+
+    // A → Bx | d
+    public void ParseA()
+    {
+        if (currentChar == 'B')
+        {
+            Advance(); // Consume 'B'
+            ParseB();  // Parse B
+            if (currentChar == 'x')
+            {
+                Advance(); // Consume 'x'
+            }
+            else
+            {
+                throw new Exception($"Syntax error: Expected 'x' but found '{currentChar}'");
+            }
+        }
+        else if (currentChar == 'd')
+        {
+            Advance(); // Consume 'd'
+        }
+        else
+        {
+            throw new Exception($"Syntax error: Unexpected character '{currentChar}' in A");
+        }
+    }
+
+    // B → Sw | C
+    public void ParseB()
+    {
+        if (currentChar == 'S')
+        {
+            Advance(); // Consume 'S'
+            ParseS();  // Parse S
+            if (currentChar == 'w')
+            {
+                Advance(); // Consume 'w'
+            }
+            else
+            {
+                throw new Exception($"Syntax error: Expected 'w' but found '{currentChar}'");
+            }
+        }
+        else if (currentChar == 'C')
+        {
+            Advance(); // Consume 'C'
+            ParseC();  // Parse C
+        }
+        else
+        {
+            throw new Exception($"Syntax error: Unexpected character '{currentChar}' in B");
+        }
+    }
+
+    // C → e C'
+    public void ParseC()
+    {
+        if (currentChar == 'e')
+        {
+            Advance(); // Consume 'e'
+            ParseCPrime();  // Parse C'
+        }
+        else
+        {
+            throw new Exception($"Syntax error: Expected 'e' but found '{currentChar}' in C");
+        }
+    }
+
+    // C' → m C' | ε
+    public void ParseCPrime()
+    {
+        if (currentChar == 'm')
+        {
+            Advance(); // Consume 'm'
+            ParseCPrime();  // Recurse for C'
+        }
+    }
+
+    // Start parsing
+    public void Parse()
+    {
+        ParseS();  // Start parsing with the 'S' rule
+        if (position < input.Length)
+        {
+            throw new Exception($"Syntax error: Unexpected character '{currentChar}' at position {position}");
+        }
+        Console.WriteLine("Parsing completed successfully.");
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        // Test the parser with a sample input
+        string input = "A d y";  // Change this input to test different cases
+        LL1Parser parser = new LL1Parser(input);
+
+        try
+        {
+            parser.Parse();  // Parse the input
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);  // Catch and display syntax errors
+        }
+    }
+}
+s

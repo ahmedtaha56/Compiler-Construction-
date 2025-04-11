@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+    // Original input string
+    const char* input = "x:55; y:55; z:4; result: x * y + z;";
+    
+    // Variables to store parsed values
+    int x, y, z, result;
+    
+    // Parse the input string (simple approach for this format)
+    sscanf(input, "x:%d; y:%d; z:%d;", &x, &y, &z);
+    
+    // Perform the calculation
+    result = x * y + z;
+    
+    // Display output
+    printf("x = %d\n", x);
+    printf("y = %d\n", y);
+    printf("z = %d\n", z);
+    printf("Result = %d\n", result);
+    
+    return 0;
+}

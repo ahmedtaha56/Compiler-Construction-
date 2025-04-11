@@ -1,25 +1,34 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+using System;
 
-int main() {
-    // Original input string
-    const char* input = "x:55; y:55; z:4; result: x * y + z;";
-    
-    // Variables to store parsed values
-    int x, y, z, result;
-    
-    // Parse the input string (simple approach for this format)
-    sscanf(input, "x:%d; y:%d; z:%d;", &x, &y, &z);
-    
-    // Perform the calculation
-    result = x * y + z;
-    
-    // Display output
-    printf("x = %d\n", x);
-    printf("y = %d\n", y);
-    printf("z = %d\n", z);
-    printf("Result = %d\n", result);
-    
-    return 0;
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Roll number last two digits = 55
+        int studentIdSuffix = 55;
+        string var5 = "var" + studentIdSuffix.ToString()[0]; // "var5"
+        string var5_2 = "var" + studentIdSuffix.ToString()[1]; // "var5" again (since 55 has two '5's)
+
+        // Assign values to x and y (using student ID digits)
+        double x = 5; // Value for var5 (first digit)
+        double y = 5; // Value for var5_2 (second digit)
+
+        Console.Write("Enter value for z: ");
+        string zInput = Console.ReadLine();
+
+        if (!double.TryParse(zInput, out double z))
+        {
+            Console.WriteLine("Invalid input for z.");
+            return;
+        }
+
+        // Calculate result
+        double result = x * y + z;
+
+        // Display output
+        Console.WriteLine($"\n{var5} (x) = {x}");
+        Console.WriteLine($"{var5_2} (y) = {y}");
+        Console.WriteLine($"z = {z}");
+        Console.WriteLine($"Result = {x} * {y} + {z} = {result}");
+    }
 }

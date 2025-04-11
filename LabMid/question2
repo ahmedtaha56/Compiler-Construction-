@@ -1,0 +1,36 @@
+using System;
+using System.Text.RegularExpressions;
+using System.Data;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string inputCode = "var a1 = 12@; float b2 = 3.14$$; int c3 = 5#; string d4 = 'text';";
+        
+        // Regex pattern to match variables starting with a, b, or c, ending with digits,
+        // and containing non-alphanumeric special characters in the value
+        string pattern = @"(var|float|int|string)\s+([abc]\d+)\s*=\s*([^;]*[^a-zA-Z0-9\s][^;]*);";
+        
+        var matches = Regex.Matches(inputCode, pattern);
+        
+        // Create a table to display results
+        Console.WriteLine("VarName\tSpecialSymbol\tTokenType");
+        Console.WriteLine("----------------------------------");
+        
+        foreach (Match match in matches)
+        {
+            string varName = match.Groups[2].Value;
+            string value = match.Groups[3].Value.Trim();
+            
+            // Extract special symbol
+            char specialSymbol = value.FirstOrDefault(c => !char.IsLetterOrDigit(c) && !char.IsWhiteSpace(c));
+            
+            // Determine token type based on declaration
+            string tokenType = match.Groups[1].Value;
+            
+            Console.WriteLine($"{varName}\t{specialSymbol}\t\t{tokenType}");
+        }
+    }
+}
